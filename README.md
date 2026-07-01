@@ -28,7 +28,6 @@ Track accounts, transactions, transfers, budgets, and recurring bills — all st
 <!-- Add screenshots here, e.g. -->
 <!-- <img src="docs/screenshots/dashboard.png" width="800" alt="FinTrack Dashboard"> -->
 
-> _Screenshots coming soon — see [Getting Started](#-quick-start) to try it yourself._
 
 ## ✨ Features
 
