@@ -18,7 +18,13 @@ Track accounts, transactions, transfers, budgets, and recurring bills — all st
 ---
 
 ## 📸 Screenshots
+<img src="docs/screenshots/dashboard.png" width="800" alt="FinTrack Dashboard">
 
+<img src="docs/screenshots/currencies.png" width="800" alt="FinTrack Currencies">
+
+<img src="docs/screenshots/transactions.png" width="800" alt="FinTrack transactions">
+
+<img src="docs/screenshots/reports.png" width="800" alt="FinTrack reports">
 <!-- Add screenshots here, e.g. -->
 <!-- <img src="docs/screenshots/dashboard.png" width="800" alt="FinTrack Dashboard"> -->
 
