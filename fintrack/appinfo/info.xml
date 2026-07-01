@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>fintrack</id>
+    <name>FinTrack</name>
+    <summary>Personal Finance Manager</summary>
+    <description><![CDATA[
+FinTrack is a full-featured personal finance application integrated into Nextcloud.
+
+**Features:**
+- Asset, Expense, Revenue and Liability accounts
+- Multi-currency support with custom conversion rates
+- Income and expense transaction tracking
+- Inter-account transfers with automatic currency conversion
+- Recurring transactions (daily, weekly, monthly, yearly)
+- Budget management with progress tracking
+- Categories and tags for transactions
+- Financial reports and analytics
+- External URL for remote transaction entry
+- JSON/CSV import and export
+- All data stored securely in your Nextcloud database
+    ]]></description>
+    <version>1.6.6</version>
+    <licence>agpl</licence>
+    <author mail="admin@example.com" homepage="https://github.com/cloudsliberty/fintrack">FinTrack</author>
+    <namespace>FinTrack</namespace>
+    <category>office</category>
+    <category>tools</category>
+    <bugs>https://github.com/cloudsliberty/fintrack/issues</bugs>
+    <dependencies>
+        <nextcloud min-version="32" max-version="32"/>
+    </dependencies>
+    <navigations>
+        <navigation>
+            <name>FinTrack</name>
+            <route>fintrack.page.index</route>
+            <icon>app.svg</icon>
+            <order>50</order>
+        </navigation>
+    </navigations>
+</info>
