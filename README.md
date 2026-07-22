@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/app.svg" alt="FinTrack" width="80">
+  <img src="screenhots/app.svg" alt="FinTrack" width="80">
 </p>
 
 <h1 align="center">FinTrack</h1>
