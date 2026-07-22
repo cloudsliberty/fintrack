@@ -251,8 +251,10 @@ Issues and pull requests are welcome at
 
 - 🐛 [Report a bug](https://github.com/cloudsliberty/fintrack/issues)
 - 📖 [Admin manual](docs/MANUAL.md)
-- ☕ [Donate](https://www.paypal.me/jaleel1618) if FinTrack is useful to you
-
+- ☕ [Donate] if FinTrack is useful to you (https://www.paypal.me/jaleel1618) , (https://ko-fi/jaleel1618)
+- ☕ **Donate if FinTrack is useful to you**2 3  https://www.paypal.me/jaleel16184    <img alt="PayPal Donate" src="https://img.shields.io/badge/PayPal-Donate-00457C?logo=paypal&logoColor   <img alt="Ko-fi Support" src="https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&
+  </a>
+</p>
 ## License
 
 [AGPL-3.0](LICENSE) — © Abdul Jaleel Adenpulan
