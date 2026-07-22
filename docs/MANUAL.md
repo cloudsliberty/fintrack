@@ -10,7 +10,7 @@ own control.
 [![Nextcloud](https://img.shields.io/badge/Nextcloud-32-00679E)](https://nextcloud.com)
 [![PHP](https://img.shields.io/badge/PHP-%3E%3D8.1-777bb4)](https://php.net)
 
-☕ **Support the devoleper if FinTrack useful to you**
+☕ **Support the devoleper if FinTrack useful to you**<br>
 <a href="https://www.paypal.me/jaleel1618"><img alt="PayPal Donate" src="https://img.shields.io/badge/PayPal-Donate-00457C?logo=paypal&logoColor=white"></a> <a href="https://ko-fi.com/jaleel1618"><img alt="Ko-fi Support" src="https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white"></a>
 
 ---
