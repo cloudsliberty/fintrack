@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img/app.svg" alt="FinTrack" width="80">
+  <img src="screenshots/app.svg" alt="FinTrack" width="80">
 </p>
 
 <h1 align="center">FinTrack</h1>
@@ -238,7 +238,7 @@ Full endpoint list, request/response shapes, and integration examples
 
 ## Android Client
 
-An unofficial Android client for FinTrack, built on top of the
+An Android client for FinTrack, built on top of the
 [External entry form & API](#external-entry-form--api).
 
 - 📱 Project / source: [github.com/cloudsliberty/fintrack-android](https://github.com/cloudsliberty/fintrack-android)
