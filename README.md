@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="screenshots/app.svg" alt="FinTrack" width="80">
+  <img src="img/app.svg" alt="FinTrack" width="80">
 </p>
 
 <h1 align="center">FinTrack</h1>
@@ -8,7 +8,7 @@
 <p align="center">
   <a href="https://github.com/cloudsliberty/fintrack/blob/main/LICENSE"><img alt="License: AGPL-3.0" src="https://img.shields.io/badge/license-AGPL--3.0-blue"></a>
   <img alt="Nextcloud" src="https://img.shields.io/badge/Nextcloud-32-00679E">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.15.2-informational">
+  <img alt="Version" src="https://img.shields.io/badge/version-1.16.1-informational">
 </p>
 
 Track accounts, income and expenses, transfers, budgets, and recurring
@@ -34,9 +34,10 @@ Nextcloud database. No third-party servers, no subscriptions, no ads.
   - [Dashboard & reports](#dashboard--reports)
   - [CSV import / export](#csv-import--export)
   - [External entry form & API](#external-entry-form--api)
-  - [App Lock (PIN)](#app-lock-pin)
+  - [Pin Lock](#pin-lock)
   - [Settings, backup & reset](#settings-backup--reset)
 - [REST API](#rest-api)
+- [Android Client](#android-client)
 - [Data & privacy](#data--privacy)
 - [Requirements](#requirements)
 - [Contributing](#contributing)
@@ -79,7 +80,7 @@ Nextcloud database. No third-party servers, no subscriptions, no ads.
 1. **Add an account** — go to *Accounts*, choose a type (Asset, Liability, or Expense) and currency.
 2. **Set your base currency** — *Settings → Currencies* — this is the currency all cross-account totals are shown in.
 3. **Add a transaction** — *Transactions → Add* — pick an account, amount, category, and (optionally) tags and notes.
-4. Optional next steps: set up a [budget](#budgets), a [recurring transaction](#recurring-transactions), the [external entry form](#external-entry-form--api) for quick mobile entry, or an [App Lock PIN](#app-lock-pin).
+4. Optional next steps: set up a [budget](#budgets), a [recurring transaction](#recurring-transactions), the [external entry form](#external-entry-form--api) for quick mobile entry, or a [Pin Lock](#pin-lock) PIN.
 
 ## Feature guide
 
@@ -171,9 +172,9 @@ import runs, instead of just a pass/fail count.
 
 Re-importing a file you've exported **updates** matching transactions
 instead of duplicating them: each transaction carries a permanent
-`unique-key(for-updating)` (its creation time as an epoch-millisecond
-number), included automatically in every export. Leave that column blank
-on a row to create a new transaction instead.
+`unique-key(for-updating)` — simply its own row id — included
+automatically in every export. Leave that column blank on a row to create
+a new transaction instead.
 
 ### External entry form & API
 
@@ -183,14 +184,14 @@ Nextcloud** — handy for a phone home-screen shortcut, a browser
 bookmarklet, or a script. Authenticated by a single API token rather than
 a Nextcloud session. See [REST API](#rest-api) below for the full
 request/response format. Both the token and the form link are masked in
-Settings and require your App Lock PIN to reveal or copy, if one is set.
+Settings and require your Pin Lock PIN to reveal or copy, if one is set.
 Opening the link offers to install itself as an app — titled
 "FinTrack - `<your-domain>`" with the same icon as the main app, so
 multiple instances stay distinguishable on your home screen — with an
 explicit Yes / Maybe Later / Cancel choice remembered locally in your
 browser.
 
-### App Lock (PIN)
+### Pin Lock
 
 An optional PIN layered on top of your normal Nextcloud login — useful on
 a shared device or if your Nextcloud session stays logged in. Includes an
@@ -199,10 +200,17 @@ attempts, a self-service security-question reset, and an
 admin-approval reset flow for when both the PIN and the security answer
 are forgotten.
 
+Once a PIN is set, choose exactly which actions require it under
+**Protected Actions**: exporting transactions to CSV, importing
+transactions from CSV, viewing Recently Deleted, and/or the External
+Entry Form — each is its own checkbox, on by default except the External
+Entry Form (opt-in, since it affects anyone with the form link, not just
+you).
+
 ### Settings, backup & reset
 
 Configure base currency, tags, category rules, the external API token,
-and App Lock from one Settings screen. Deleting an account or transaction
+and Pin Lock from one Settings screen. Deleting an account or transaction
 always asks for confirmation first — account deletion adds a 3-second
 cancellable countdown on top, since it can't be undone. Deleted
 transactions aren't gone immediately either: the last 100 land in
@@ -228,6 +236,14 @@ Full endpoint list, request/response shapes, and integration examples
 (including a ready-to-use spec for building your own client) are in the
 [admin manual](docs/MANUAL.md).
 
+## Android Client
+
+An unofficial Android client for FinTrack, built on top of the
+[External entry form & API](#external-entry-form--api).
+
+- 📱 Project / source: [github.com/cloudsliberty/fintrack-android](https://github.com/cloudsliberty/fintrack-android)
+- 📦 APK (debug build): [FinTrack.v1.1.7.apk](https://github.com/cloudsliberty/fintrack-android/releases/download/v1.1.7/FinTrack.v1.1.7.apk)
+
 ## Data & privacy
 
 All data lives in your own Nextcloud database — accounts, transactions,
@@ -251,7 +267,8 @@ Issues and pull requests are welcome at
 
 - 🐛 [Report a bug](https://github.com/cloudsliberty/fintrack/issues)
 - 📖 [Admin manual](docs/MANUAL.md)
-- ☕ **Donate if FinTrack is useful to you** <a href="https://www.paypal.me/jaleel1618"><img alt="PayPal Donate" src="https://img.shields.io/badge/PayPal-Donate-00457C?logo=paypal&logoColor=white"></a> <a href="https://ko-fi.com/jaleel1618"><img alt="Ko-fi Support" src="https://img.shields.io/badge/Ko--fi-Support-FF5E5B?logo=ko-fi&logoColor=white"></a>
+- ☕ [Donate](https://www.paypal.me/jaleel1618) if FinTrack is useful to you
+
 ## License
 
 [AGPL-3.0](LICENSE) — © Abdul Jaleel Adenpulan
