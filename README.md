@@ -238,7 +238,7 @@ Full endpoint list, request/response shapes, and integration examples
 
 ## Mobile and Web Clients
 
-###Android
+### Android
 
 A Beta version Android client for FinTrack, built on top of the
 [External entry form & API](#external-entry-form--api).
@@ -247,7 +247,7 @@ A Beta version Android client for FinTrack, built on top of the
 
 - 📱 Project / source: [github.com/cloudsliberty/fintrack-android](https://github.com/cloudsliberty/fintrack-android)
 
-###PWA (Installable Progressive Web App)
+### PWA (Installable Progressive Web App)
 Install FinTrack on your desktop or mobile device for quick access and an app-like experience.
 
 - 📦 PWA page - [https://cloudsliberty.github.io/fintrack-PWA/](https://cloudsliberty.github.io/fintrack-PWA/)
