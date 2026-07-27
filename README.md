@@ -236,13 +236,22 @@ Full endpoint list, request/response shapes, and integration examples
 (including a ready-to-use spec for building your own client) are in the
 [admin manual](docs/MANUAL.md).
 
-## Android Client
+## Clients
+###Android
 
-An Android client for FinTrack, built on top of the
+A Beta version Android client for FinTrack, built on top of the
 [External entry form & API](#external-entry-form--api).
 
-- 📱 Project / source: [github.com/cloudsliberty/fintrack-android](https://github.com/cloudsliberty/fintrack-android)
 - 📦 APK (debug build): [FinTrack.v1.1.7.apk](https://github.com/cloudsliberty/fintrack-android/releases/download/v1.1.7/FinTrack.v1.1.7.apk)
+
+- 📱 Project / source: [github.com/cloudsliberty/fintrack-android](https://github.com/cloudsliberty/fintrack-android)
+
+###PWA (Installable Progressive Web App)
+Install FinTrack on your desktop or mobile device for quick access and an app-like experience.
+
+- 📦 PWA page - [https://cloudsliberty.github.io/fintrack-PWA/](https://cloudsliberty.github.io/fintrack-PWA/)
+
+- 📱 Project / source: [https://github.com/cloudsliberty/fintrack-PWA](https://github.com/cloudsliberty/fintrack-PWA)
 
 ## Data & privacy
 
