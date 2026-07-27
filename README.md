@@ -37,7 +37,7 @@ Nextcloud database. No third-party servers, no subscriptions, no ads.
   - [Pin Lock](#pin-lock)
   - [Settings, backup & reset](#settings-backup--reset)
 - [REST API](#rest-api)
-- [Android Client](#android-client)
+- [Mobile and Web Clients](#mobile-and-web-clients)
 - [Data & privacy](#data--privacy)
 - [Requirements](#requirements)
 - [Contributing](#contributing)
@@ -236,7 +236,8 @@ Full endpoint list, request/response shapes, and integration examples
 (including a ready-to-use spec for building your own client) are in the
 [admin manual](docs/MANUAL.md).
 
-## Clients
+## Mobile and Web Clients
+
 ###Android
 
 A Beta version Android client for FinTrack, built on top of the
