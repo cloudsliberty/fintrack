@@ -1,0 +1,969 @@
+/* FinTrack for Nextcloud 32 — fully scoped under #fintrack-root */
+
+#fintrack-root {
+  --ft-bg:       #0f1117;
+  --ft-bg2:      #161b27;
+  --ft-bg3:      #1e2535;
+  --ft-bg4:      #252e42;
+  --ft-border:   #2a3450;
+  --ft-borderl:  #3a4868;
+  --ft-text:     #e8eaf0;
+  --ft-text2:    #9aa3b8;
+  --ft-text3:    #5c6880;
+  --ft-accent:   #4f8ef7;
+  --ft-accentd:  rgba(79,142,247,0.15);
+  --ft-green:    #2ecc8a;
+  --ft-greend:   rgba(46,204,138,0.12);
+  --ft-red:      #f05151;
+  --ft-redd:     rgba(240,81,81,0.12);
+  --ft-yellow:   #f0c040;
+  --ft-yellowd:  rgba(240,192,64,0.12);
+  --ft-purple:   #9b6cf0;
+  --ft-purpled:  rgba(155,108,240,0.12);
+  --ft-radius:   10px;
+  --ft-rsm:      6px;
+  --ft-side:     220px;
+  --ft-font:     'Inter', -apple-system, sans-serif;
+  --ft-mono:     'JetBrains Mono', 'Fira Mono', monospace;
+
+  /* Short aliases — a lot of the JS-rendered markup references these
+     unprefixed names (var(--green), var(--text-3), var(--bg), etc). They
+     were never declared, so those styles silently fell back to inherited/
+     transparent values. Aliasing them here fixes colors and backgrounds
+     across the dashboard, reports, and transaction pages. */
+  --bg:      var(--ft-bg);
+  --bg2:     var(--ft-bg2);
+  --bg3:     var(--ft-bg3);
+  --bg4:     var(--ft-bg4);
+  --border:  var(--ft-border);
+  --borderl: var(--ft-borderl);
+  --text:    var(--ft-text);
+  --text-2:  var(--ft-text2);
+  --text-3:  var(--ft-text3);
+  --accent:  var(--ft-accent);
+  --accentd: var(--ft-accentd);
+  --green:   var(--ft-green);
+  --greend:  var(--ft-greend);
+  --red:     var(--ft-red);
+  --redd:    var(--ft-redd);
+  --yellow:  var(--ft-yellow);
+  --yellowd: var(--ft-yellowd);
+  --purple:  var(--ft-purple);
+  --purpled: var(--ft-purpled);
+  --radius:  var(--ft-radius);
+  --rsm:     var(--ft-rsm);
+  --mono:    var(--ft-mono);
+
+  display: flex;
+  width: 100%;
+  height: calc(100vh - 50px); /* NC32 top bar is 50px */
+  overflow: hidden;
+  background: var(--ft-bg);
+  color: var(--ft-text);
+  font-family: var(--ft-font);
+  font-size: 14px;
+  line-height: 1.5;
+  box-sizing: border-box;
+}
+
+#fintrack-root *, #fintrack-root *::before, #fintrack-root *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Sidebar ── */
+#ft-sidebar {
+  width: var(--ft-side);
+  flex-shrink: 0;
+  background: var(--ft-bg2);
+  border-right: 1px solid var(--ft-border);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ft-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 16px;
+  border-bottom: 1px solid var(--ft-border);
+  flex-shrink: 0;
+}
+
+.ft-logo-mark {
+  width: 30px; height: 30px;
+  background: var(--ft-accent);
+  border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 12px; letter-spacing: 0.2px; color: #fff;
+  flex-shrink: 0;
+  box-shadow: 0 2px 8px rgba(79,142,247,0.45);
+}
+
+.ft-logo-text { font-weight: 700; font-size: 15px; color: var(--ft-text); flex: 1; }
+
+#ft-sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--ft-text3);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: var(--ft-rsm, 6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+#ft-sidebar-toggle:hover { background: var(--ft-bg3); color: var(--ft-text); }
+#ft-sidebar-toggle svg { width: 16px; height: 16px; fill: currentColor; }
+
+.ft-nav { padding: 10px 0 16px; flex: 1; }
+
+.ft-nav-group { margin-bottom: 6px; }
+
+/* Extra breathing room + a divider above Settings so it reads as its own,
+   slightly separate area at the bottom of the sidebar rather than blending
+   into the System group above it. */
+.ft-nav-group-settings {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--ft-border);
+}
+
+.ft-nav-label {
+  display: block;
+  padding: 5px 16px 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ft-text3);
+}
+
+.ft-nav-item {
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  padding: 8px 16px !important;
+  color: var(--ft-text2) !important;
+  text-decoration: none !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  opacity: 1 !important;
+  min-height: unset !important;
+  height: auto !important;
+}
+
+.ft-nav-item svg {
+  width: 15px !important;
+  height: 15px !important;
+  fill: currentColor !important;
+  flex-shrink: 0;
+  opacity: 0.7;
+  min-width: 15px !important;
+  min-height: 15px !important;
+  max-width: 15px !important;
+  max-height: 15px !important;
+}
+
+
+
+.ft-nav-item:hover {
+  color: var(--ft-text) !important;
+  background: var(--ft-bg3) !important;
+}
+
+.ft-nav-item.active {
+  color: var(--ft-accent) !important;
+  background: var(--ft-accentd) !important;
+  border-left-color: var(--ft-accent) !important;
+  font-weight: 500 !important;
+}
+
+.ft-nav-item.active svg { opacity: 1; }
+
+/* ── Main content ── */
+#ft-main {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--ft-bg);
+}
+
+.ft-page { display: none; }
+.ft-page.active { display: block; }
+
+/* ── Page header ── */
+#fintrack-root .page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 26px 0;
+  gap: 14px;
+}
+
+#fintrack-root .page-title   { font-size: 19px; font-weight: 600; color: var(--ft-text); }
+#fintrack-root .page-subtitle { font-size: 12.5px; color: var(--ft-text2); margin-top: 2px; }
+
+/* ── Buttons ── */
+#fintrack-root .btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 7px 14px !important;
+  border-radius: var(--ft-rsm) !important;
+  border: none !important;
+  font-family: var(--ft-font) !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.15s !important;
+  white-space: nowrap !important;
+  line-height: 1.4 !important;
+  height: auto !important;
+  min-height: unset !important;
+}
+
+#fintrack-root .btn svg {
+  width: 14px !important; height: 14px !important;
+  fill: currentColor !important;
+  min-width: 14px !important; max-width: 14px !important;
+}
+
+#fintrack-root .btn-primary { background: var(--ft-accent) !important; color: #fff !important; }
+#fintrack-root .btn-primary:hover { filter: brightness(1.1) !important; }
+#fintrack-root .btn-secondary { background: var(--ft-bg3) !important; color: var(--ft-text) !important; border: 1px solid var(--ft-border) !important; }
+#fintrack-root .btn-secondary:hover { background: var(--ft-bg4) !important; }
+#fintrack-root .btn-danger { background: var(--ft-redd) !important; color: var(--ft-red) !important; border: 1px solid rgba(240,81,81,0.25) !important; }
+#fintrack-root .btn-ghost { background: transparent !important; color: var(--ft-text2) !important; }
+#fintrack-root .btn-ghost:hover { background: var(--ft-bg3) !important; color: var(--ft-text) !important; }
+#fintrack-root .btn-sm { padding: 4px 10px !important; font-size: 12px !important; }
+#fintrack-root .btn-icon { padding: 6px !important; }
+
+/* ── Stats strip ── */
+#fintrack-root .stats-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1px;
+  background: var(--ft-border);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--ft-radius);
+  overflow: hidden;
+  margin: 18px 26px 0;
+}
+
+#fintrack-root .stat-card { background: var(--ft-bg2); padding: 16px 18px; }
+#fintrack-root .stat-label { font-size: 11px; font-weight: 600; color: var(--ft-text3); text-transform: uppercase; letter-spacing: 0.5px; }
+#fintrack-root .stat-value { font-size: 20px; font-weight: 600; font-family: var(--ft-mono); margin-top: 4px; color: var(--ft-text); }
+#fintrack-root .stat-value.green  { color: var(--ft-green); }
+#fintrack-root .stat-value.red    { color: var(--ft-red); }
+#fintrack-root .stat-value.accent { color: var(--ft-accent); }
+#fintrack-root .stat-sub { font-size: 11px; color: var(--ft-text3); margin-top: 2px; }
+
+/* ── Content area ── */
+#fintrack-root .content { padding: 18px 26px 40px; }
+
+/* ── Cards ── */
+#fintrack-root .card {
+  background: var(--ft-bg2);
+  border: 1px solid var(--ft-border);
+  border-radius: var(--ft-radius);
+  overflow: hidden;
+}
+
+#fintrack-root .card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--ft-border);
+}
+
+#fintrack-root .card-title { font-size: 13.5px; font-weight: 600; color: var(--ft-text); }
+#fintrack-root .card-body  { padding: 14px 18px; }
+
+/* ── Account cards ── */
+#fintrack-root .accounts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+#fintrack-root .account-card {
+  background: var(--ft-bg2);
+  border: 1px solid var(--ft-border);
+  border-left-width: 4px;
+  border-radius: var(--ft-radius);
+  padding: 16px 18px;
+  cursor: pointer;
+  transition: all 0.15s;
+  position: relative;
+}
+
+#fintrack-root .account-card:hover { border-color: var(--ft-borderl); background: var(--ft-bg3); }
+#fintrack-root .account-card-type  { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; color: var(--ft-text3); margin-bottom: 6px; }
+#fintrack-root .account-card-icon  { font-size: 1.15em; margin-right: 2px; }
+#fintrack-root .account-card-name  { font-size: 20px; font-weight: 700; margin-bottom: 2px; display: flex; align-items: center; gap: 4px; }
+#fintrack-root .account-card-typeline { font-size: 12.5px; color: var(--ft-text); font-weight: 500; margin-bottom: 8px; }
+#fintrack-root .account-card-currency { font-size: 11px; color: var(--ft-text3); font-family: var(--ft-mono); }
+#fintrack-root .account-balance    { font-size: 20px; font-weight: 700; font-family: var(--ft-mono); margin-top: 12px; }
+#fintrack-root .account-balance.compact { font-size: 15px; margin-top: 6px; }
+#fintrack-root .account-income-expense { display: flex; gap: 14px; margin-top: 6px; }
+#fintrack-root .account-inc { display: flex; align-items: center; gap: 3px; font-size: 12px; font-family: var(--ft-mono); color: var(--ft-green); }
+#fintrack-root .account-exp { display: flex; align-items: center; gap: 3px; font-size: 12px; font-family: var(--ft-mono); color: var(--ft-red); }
+#fintrack-root .account-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 3px; opacity: 0; transition: opacity 0.15s; }
+#fintrack-root .account-card:hover .account-actions { opacity: 1; }
+
+#fintrack-root .account-card.compact { padding: 10px 12px; }
+#fintrack-root .account-card.compact .account-card-name { font-size: 14px; }
+#fintrack-root .account-card.compact .account-card-typeline { font-size: 10.5px; margin-bottom: 2px; }
+#fintrack-root .accounts-grid.compact { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }
+
+/* ── Active / Inactive collapsible sections ── */
+#fintrack-root .accounts-section { margin-bottom: 18px; }
+#fintrack-root .accounts-section-header {
+  display: flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 8px 4px; margin-bottom: 8px; user-select: none;
+}
+#fintrack-root .accounts-section-title { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ft-text2); }
+#fintrack-root .accounts-section-chevron { width: 16px; height: 16px; fill: var(--ft-text3); transition: transform 0.15s; }
+#fintrack-root .accounts-section-chevron.expanded { transform: rotate(90deg); }
+#fintrack-root .ft-empty-inline { color: var(--ft-text3); font-size: 13px; padding: 8px 4px 16px; }
+#fintrack-root .collapsible-card-header { cursor: pointer; user-select: none; }
+#fintrack-root .collapsible-card-header .accounts-section-chevron { flex-shrink: 0; }
+#fintrack-root .account-badge {
+  position: absolute; bottom: 12px; right: 14px; font-size: 10px; font-weight: 600;
+  color: var(--ft-text3); background: var(--ft-bg3); border: 1px solid var(--ft-border);
+  border-radius: 4px; padding: 2px 6px; text-transform: uppercase; letter-spacing: 0.5px;
+}
+
+/* ── Fuzzy-search comboboxes (accounts / categories / tags) ── */
+#fintrack-root .ft-combobox { position: relative; }
+#fintrack-root .ft-combo-input { width: 100%; }
+#fintrack-root .ft-combo-dropdown {
+  position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 40;
+  background: var(--ft-bg3); border: 1px solid var(--ft-borderl); border-radius: var(--ft-rsm);
+  max-height: 220px; overflow-y: auto; box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+}
+#fintrack-root .ft-combo-option { padding: 8px 12px; font-size: 13px; cursor: pointer; color: var(--ft-text); }
+#fintrack-root .ft-combo-option:hover { background: var(--ft-bg4); }
+#fintrack-root .ft-combo-empty { padding: 8px 12px; font-size: 12.5px; color: var(--ft-text3); }
+
+/* ── Multi-select tag filter (All Transactions page) ── */
+#fintrack-root .ft-multitag-filter { min-width: 170px; display: flex; flex-direction: column; gap: 4px; }
+#fintrack-root .ft-multitag-chips {
+  display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
+}
+#fintrack-root .ft-combo-placeholder { color: var(--ft-text3); font-size: 13px; }
+#fintrack-root .ft-tag-chip {
+  display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; font-weight: 600;
+  padding: 2px 6px 2px 8px; border-radius: 999px; background: var(--ft-bg4); color: var(--ft-text);
+}
+#fintrack-root .ft-tag-chip-x {
+  background: none; border: none; color: var(--ft-text3); cursor: pointer;
+  font-size: 13px; line-height: 1; padding: 0 2px; border-radius: 50%;
+}
+#fintrack-root .ft-tag-chip-x:hover { color: var(--ft-text); background: var(--ft-bg3); }
+#fintrack-root .ft-tag-filter-option { display: flex; align-items: center; gap: 6px; }
+#fintrack-root .ft-tag-filter-option.selected { background: var(--ft-bg4); font-weight: 600; }
+#fintrack-root .ft-tag-filter-check { width: 14px; display: inline-block; color: var(--ft-accent, var(--ft-text)); }
+
+#fintrack-root .ft-row-clickable { cursor: pointer; }
+
+/* ── Interactive dashboard / report summary items ── */
+/* Any dashboard or report card/row that jumps to a filtered page uses
+   .ft-clickable (block-level items like progress rows) or .ft-row-clickable
+   (table rows, defined above) so it gets a consistent pointer + hover cue. */
+#fintrack-root .ft-clickable {
+  cursor: pointer;
+  border-radius: var(--ft-rsm);
+  transition: background 0.15s ease;
+  margin: -6px -8px;
+  padding: 6px 8px;
+}
+#fintrack-root .ft-clickable:hover { background: var(--ft-bg3); }
+
+#fintrack-root .stat-card.ft-clickable:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.28), 0 6px 20px rgba(0,0,0,0.20);
+  transform: translateY(-1px);
+}
+
+/* Briefly draws the eye to a specific budget/recurring row after jumping to
+   it from a dashboard/report summary via navigateAndHighlight(). */
+@keyframes ft-highlight-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(124, 92, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(124, 92, 255, 0); }
+}
+#fintrack-root .ft-highlight-pulse { animation: ft-highlight-pulse 0.8s ease-out 2; }
+
+#fintrack-root .type-asset   .account-balance { color: var(--ft-accent); }
+#fintrack-root .type-expense .account-balance { color: var(--ft-red); }
+#fintrack-root .type-revenue .account-balance { color: var(--ft-green); }
+#fintrack-root .type-liability .account-balance { color: var(--ft-yellow); }
+
+/* ── Table ── */
+#fintrack-root .table-wrap { overflow-x: auto; }
+
+#fintrack-root table { width: 100%; border-collapse: collapse; }
+
+#fintrack-root th {
+  padding: 9px 12px;
+  text-align: left !important;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ft-text3);
+  border-bottom: 1px solid var(--ft-border);
+  white-space: nowrap;
+  background: transparent !important;
+}
+
+#fintrack-root td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--ft-border);
+  font-size: 13px;
+  color: var(--ft-text2);
+  background: transparent !important;
+}
+
+#fintrack-root tr:last-child td { border-bottom: none; }
+#fintrack-root tr:hover td { background: var(--ft-bg3) !important; color: var(--ft-text); }
+
+#fintrack-root .td-mono  { font-family: var(--ft-mono); font-size: 12.5px; }
+#fintrack-root .td-green { color: var(--ft-green) !important; }
+#fintrack-root .td-red   { color: var(--ft-red) !important; }
+#fintrack-root .td-muted { color: var(--ft-text3) !important; }
+
+/* ── Forms ── */
+#fintrack-root .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+#fintrack-root .form-grid.cols-1 { grid-template-columns: 1fr; }
+#fintrack-root .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+#fintrack-root .form-group { display: flex; flex-direction: column; gap: 5px; }
+#fintrack-root .form-group.full { grid-column: 1 / -1; }
+#fintrack-root .form-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
+#fintrack-root .form-hint { font-size: 11px; color: var(--ft-text3); }
+
+#fintrack-root label { font-size: 12px; font-weight: 500; color: var(--ft-text2); }
+
+#fintrack-root input:not([type=checkbox]):not([type=radio]):not([type=color]),
+#fintrack-root select,
+#fintrack-root textarea {
+  background: var(--ft-bg) !important;
+  border: 1px solid var(--ft-border) !important;
+  border-radius: var(--ft-rsm) !important;
+  padding: 8px 11px !important;
+  color: var(--ft-text) !important;
+  font-family: var(--ft-font) !important;
+  font-size: 13px !important;
+  transition: border-color 0.15s !important;
+  outline: none !important;
+  width: 100% !important;
+  height: auto !important;
+  min-height: unset !important;
+  box-shadow: none !important;
+}
+
+/* Native color input rendered as a clean filled circle instead of the
+   default browser swatch, which was getting squashed by the dark-input
+   rule above into a thin sliver ("white line"). */
+#fintrack-root input[type=color] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 38px !important;
+  height: 38px !important;
+  padding: 0 !important;
+  border: 2px solid var(--ft-border) !important;
+  border-radius: 50% !important;
+  background: none !important;
+  cursor: pointer;
+  overflow: hidden;
+}
+#fintrack-root input[type=color]::-webkit-color-swatch-wrapper { padding: 0; border-radius: 50%; }
+#fintrack-root input[type=color]::-webkit-color-swatch { border: none; border-radius: 50%; }
+#fintrack-root input[type=color]::-moz-color-swatch { border: none; border-radius: 50%; }
+#fintrack-root input[type=color]:focus { border-color: var(--ft-accent) !important; }
+
+/* Icon (emoji) field — button is embedded inside the input's own box
+   (absolutely positioned over its right edge) rather than sitting next to
+   it as a separate control. The whole input is clickable too. */
+#fintrack-root .ft-emoji-field {
+  position: relative;
+  width: 46px;
+}
+#fintrack-root .ft-emoji-input {
+  width: 46px !important;
+  min-width: 46px !important;
+  flex-shrink: 0;
+  font-size: 20px !important;
+  text-align: center;
+  cursor: pointer;
+  caret-color: transparent;
+  color: transparent; /* the ft-emoji-btn glyph on top shows the actual icon */
+}
+#fintrack-root .ft-emoji-btn {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  border-radius: var(--ft-rsm);
+  pointer-events: none; /* the input beneath already handles the click/tap */
+}
+#fintrack-root .ft-emoji-popover {
+  position: relative;
+  z-index: 20;
+  margin-top: 10px; padding: 10px; border: 1px solid var(--ft-border);
+  border-radius: var(--ft-rsm); background: var(--ft-bg2);
+}
+#fintrack-root .ft-emoji-grid {
+  display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; margin-top: 8px;
+  max-height: 160px; overflow-y: auto;
+}
+#fintrack-root .ft-emoji-opt {
+  font-size: 19px; background: none; border: 1px solid transparent; border-radius: var(--ft-rsm);
+  padding: 6px 0; cursor: pointer; transition: background 0.1s;
+}
+#fintrack-root .ft-emoji-opt:hover { background: var(--ft-bg4); border-color: var(--ft-borderl); }
+#fintrack-root .ft-emoji-add { color: var(--ft-text3); border: 1px dashed var(--ft-border); font-weight: 700; }
+#fintrack-root .ft-emoji-add:hover { color: var(--ft-accent); border-color: var(--ft-accent); background: var(--ft-bg4); }
+
+#fintrack-root input:focus,
+#fintrack-root select:focus,
+#fintrack-root textarea:focus {
+  border-color: var(--ft-accent) !important;
+  box-shadow: 0 0 0 2px var(--ft-accentd) !important;
+}
+
+#fintrack-root select option { background: var(--ft-bg2); color: var(--ft-text); }
+#fintrack-root textarea { resize: vertical; min-height: 64px !important; }
+
+/* ── Modal ── */
+#ft-modal-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0,0,0,0.65) !important;
+  backdrop-filter: blur(3px);
+  z-index: 10000 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+#ft-modal-overlay.ft-hidden { display: none !important; }
+.ft-hidden { display: none !important; }
+
+#ft-modal {
+  background: var(--ft-bg2) !important;
+  border: 1px solid var(--ft-border) !important;
+  border-radius: 12px !important;
+  width: 90% !important;
+  max-width: 540px !important;
+  max-height: 88vh !important;
+  overflow-y: auto !important;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5) !important;
+  color: var(--ft-text) !important;
+}
+
+#ft-modal-header {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 16px 20px !important;
+  border-bottom: 1px solid var(--ft-border) !important;
+  position: sticky !important;
+  top: 0 !important;
+  background: var(--ft-bg2) !important;
+  z-index: 1 !important;
+}
+
+#ft-modal-title { font-size: 15px !important; font-weight: 600 !important; color: var(--ft-text) !important; }
+
+#ft-modal-close {
+  background: none !important;
+  border: none !important;
+  color: var(--ft-text3) !important;
+  font-size: 22px !important;
+  cursor: pointer !important;
+  line-height: 1 !important;
+  padding: 2px 6px !important;
+  border-radius: 4px !important;
+  height: auto !important;
+  min-height: unset !important;
+}
+
+#ft-modal-close:hover { color: var(--ft-text) !important; background: var(--ft-bg3) !important; }
+#ft-modal-body { padding: 20px !important; }
+
+/* ── Toast ── */
+#ft-toast-container {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  z-index: 20000 !important;
+}
+
+#fintrack-root .ft-toast,
+.ft-toast {
+  padding: 11px 16px;
+  border-radius: var(--ft-rsm);
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--ft-bg3);
+  border: 1px solid var(--ft-border);
+  color: var(--ft-text);
+  animation: ftSlideIn 0.2s ease;
+  min-width: 240px;
+  max-width: 340px;
+}
+
+.ft-toast.success { border-color: var(--ft-green); color: var(--ft-green); background: var(--ft-greend); }
+.ft-toast.error   { border-color: var(--ft-red);   color: var(--ft-red);   background: var(--ft-redd); }
+
+@keyframes ftSlideIn { from { transform: translateX(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+
+/* ── Progress bar ── */
+#fintrack-root .progress-bar {
+  height: 5px; background: var(--ft-bg4); border-radius: 3px; overflow: hidden; margin-top: 6px;
+}
+#fintrack-root .progress-fill {
+  height: 100%; border-radius: 3px; transition: width 0.4s ease; background: var(--ft-accent);
+}
+#fintrack-root .progress-fill.warning { background: var(--ft-yellow); }
+#fintrack-root .progress-fill.danger  { background: var(--ft-red); }
+
+/* ── Chips ── */
+#fintrack-root .chip {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 500;
+  background: var(--ft-bg3); color: var(--ft-text2); border: 1px solid var(--ft-border);
+}
+#fintrack-root .chip.green  { background: var(--ft-greend);  color: var(--ft-green);  border-color: rgba(46,204,138,0.25); }
+#fintrack-root .chip.red    { background: var(--ft-redd);    color: var(--ft-red);    border-color: rgba(240,81,81,0.25); }
+#fintrack-root .chip.accent { background: var(--ft-accentd); color: var(--ft-accent); border-color: rgba(79,142,247,0.25); }
+#fintrack-root .chip.purple { background: var(--ft-purpled); color: var(--ft-purple); border-color: rgba(155,108,240,0.25); }
+#fintrack-root .chip.yellow { background: var(--ft-yellowd); color: var(--ft-yellow); border-color: rgba(240,192,64,0.25); }
+
+/* ── Filters bar ── */
+#fintrack-root .filters-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 26px; border-bottom: 1px solid var(--ft-border);
+  background: var(--ft-bg2); flex-wrap: wrap;
+}
+
+#fintrack-root .filters-bar input,
+#fintrack-root .filters-bar select { max-width: 180px; }
+
+/* Labeled filter field (e.g. From/To date) — small caption above the input
+   so it's clear what each field means at a glance instead of relying on the
+   native date placeholder alone. */
+#fintrack-root .ft-filter-field { display: flex; flex-direction: column; gap: 3px; }
+#fintrack-root .ft-filter-label {
+  font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px;
+  color: var(--ft-text3);
+}
+
+/* Bordered group around the tag filter (match-mode toggle + selected chips +
+   tag search) so it reads as one related unit inside the filters bar rather
+   than floating loose among the other single-purpose filters. */
+#fintrack-root .ft-tag-filter-box {
+  display: flex; flex-direction: column; gap: 4px;
+  border: 1px solid var(--ft-border); border-radius: var(--ft-rsm);
+  padding: 8px 10px; background: var(--ft-bg1, var(--ft-bg));
+}
+#fintrack-root .ft-tag-filter-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+#fintrack-root .ft-tag-strict-toggle {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10.5px; font-weight: 600; color: var(--ft-text3);
+  cursor: pointer; user-select: none; white-space: nowrap;
+}
+#fintrack-root .ft-tag-strict-toggle input[type="checkbox"] {
+  cursor: pointer; width: 12px; height: 12px; margin: 0;
+}
+
+
+/* ── Dashboard grid ── */
+#fintrack-root .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ── Budget cards ── */
+#fintrack-root .accounts-grid .budget-card,
+#fintrack-root .budget-card {
+  background: var(--ft-bg2); border: 1px solid var(--ft-border);
+  border-radius: var(--ft-radius); padding: 16px 18px;
+}
+#fintrack-root .budget-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+#fintrack-root .budget-name   { font-size: 13.5px; font-weight: 600; }
+#fintrack-root .budget-period { font-size: 11.5px; color: var(--ft-text3); }
+#fintrack-root .budget-amounts { display: flex; justify-content: space-between; font-size: 12px; color: var(--ft-text2); margin-top: 6px; }
+
+/* ── Conversion info ── */
+#fintrack-root .conversion-info {
+  background: var(--ft-accentd); border: 1px solid rgba(79,142,247,0.25);
+  border-radius: var(--ft-rsm); padding: 10px 13px; font-size: 12.5px; color: var(--ft-accent); margin: 8px 0;
+}
+
+/* ── API box ── */
+#fintrack-root .api-box {
+  background: var(--ft-bg); border: 1px solid var(--ft-border); border-radius: var(--ft-rsm);
+  padding: 12px 14px; font-family: var(--ft-mono); font-size: 12px; color: var(--ft-accent); word-break: break-all;
+}
+
+#fintrack-root .api-method {
+  display: inline-block; padding: 1px 7px; border-radius: 3px; font-size: 10px; font-weight: 700; margin-right: 6px;
+}
+#fintrack-root .api-method.GET    { background: var(--ft-greend); color: var(--ft-green); }
+#fintrack-root .api-method.POST   { background: var(--ft-accentd); color: var(--ft-accent); }
+#fintrack-root .api-method.PUT    { background: var(--ft-yellowd); color: var(--ft-yellow); }
+#fintrack-root .api-method.DELETE { background: var(--ft-redd); color: var(--ft-red); }
+
+/* ── Empty state ── */
+#fintrack-root .empty-state { text-align: center; padding: 36px 20px; color: var(--ft-text3); }
+#fintrack-root .empty-state svg { width: 36px; height: 36px; fill: currentColor; opacity: 0.3; margin-bottom: 10px; }
+#fintrack-root .empty-title { font-size: 14px; font-weight: 500; color: var(--ft-text2); margin-bottom: 5px; }
+
+/* ── Section divider ── */
+#fintrack-root .section-divider { height: 1px; background: var(--ft-border); margin: 16px 0; }
+
+/* ── Scrollbar ── */
+#ft-sidebar::-webkit-scrollbar,
+#ft-main::-webkit-scrollbar,
+#ft-modal::-webkit-scrollbar { width: 5px; }
+#ft-sidebar::-webkit-scrollbar-thumb,
+#ft-main::-webkit-scrollbar-thumb,
+#ft-modal::-webkit-scrollbar-thumb { background: var(--ft-bg4); border-radius: 3px; }
+
+/* ── Sidebar collapse (icon-only mode) ──
+   Two ways this happens: automatically below 900px, or manually via the
+   toggle button, which adds .ft-sidebar-collapsed to #fintrack-root and is
+   remembered in localStorage. Both share the same visual rules. */
+#fintrack-root.ft-sidebar-collapsed { --ft-side: 52px; }
+#fintrack-root.ft-sidebar-collapsed .ft-logo-text,
+#fintrack-root.ft-sidebar-collapsed .ft-nav-label,
+#fintrack-root.ft-sidebar-collapsed .ft-nav-item span { display: none !important; }
+#fintrack-root.ft-sidebar-collapsed .ft-nav-item { justify-content: center !important; padding: 10px !important; }
+#fintrack-root.ft-sidebar-collapsed .ft-nav-item svg { width: 18px !important; height: 18px !important; min-width: 18px !important; max-width: 18px !important; }
+#fintrack-root.ft-sidebar-collapsed .ft-logo { justify-content: center !important; padding: 14px 8px !important; }
+#fintrack-root.ft-sidebar-collapsed .ft-logo-mark { margin: 0 auto; }
+#fintrack-root.ft-sidebar-collapsed #ft-sidebar-toggle { display: none; }
+#fintrack-root.ft-sidebar-collapsed .ft-nav-group-settings { display: flex; justify-content: center; }
+
+/* The "expand sidebar" control lives as a regular row in the nav (styled
+   like Asset Accounts, Settings, etc. via the shared .ft-nav-item rules)
+   rather than a small floating circle, so it's much easier to spot and
+   click. It only ever appears once the sidebar is collapsed — a distinct
+   accent color (purple, vs. the blue used for the active-page indicator)
+   makes it read as a special action rather than another nav destination. */
+.ft-nav-group-expand {
+  display: none;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--ft-border);
+}
+#fintrack-root.ft-sidebar-collapsed .ft-nav-group-expand { display: block; }
+
+#ft-sidebar-expand {
+  width: 100%;
+  background: var(--ft-purpled);
+  border: none;
+  font: inherit;
+  color: var(--ft-purple) !important;
+}
+#ft-sidebar-expand svg { opacity: 1 !important; color: var(--ft-purple); }
+#ft-sidebar-expand:hover {
+  background: var(--ft-purple) !important;
+  color: #fff !important;
+}
+#ft-sidebar-expand:hover svg { color: #fff; }
+#ft-sidebar { position: relative; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  #fintrack-root { --ft-side: 52px; }
+  .ft-logo-text, .ft-nav-label, .ft-nav-item span { display: none !important; }
+  .ft-nav-item { justify-content: center !important; padding: 10px !important; }
+  .ft-nav-item svg { width: 18px !important; height: 18px !important; min-width: 18px !important; max-width: 18px !important; }
+  .ft-logo { justify-content: center !important; padding: 14px !important; }
+  #ft-sidebar-toggle { display: none; }
+  #fintrack-root .dash-grid,
+  #fintrack-root .form-grid { grid-template-columns: 1fr !important; }
+}
+
+@media (max-width: 600px) {
+  #fintrack-root .accounts-grid { grid-template-columns: 1fr !important; }
+  #fintrack-root .stats-strip   { grid-template-columns: 1fr 1fr !important; }
+}
+
+/* ── Material-style elevation & motion ──
+   Subtle Material Design touches: layered shadows that deepen on hover/press,
+   a soft lift on interactive surfaces, and a spreading focus ring on inputs. */
+#fintrack-root .card,
+#fintrack-root .stat-card,
+#fintrack-root .account-card,
+#fintrack-root .budget-card {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.24), 0 1px 3px rgba(0,0,0,0.14);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+#fintrack-root .stats-strip .stat-card {
+  border-radius: var(--ft-rsm);
+}
+
+#fintrack-root .card:hover,
+#fintrack-root .stat-card:hover,
+#fintrack-root .account-card:hover,
+#fintrack-root .budget-card:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.28), 0 6px 20px rgba(0,0,0,0.20);
+  transform: translateY(-1px);
+}
+
+#fintrack-root .btn {
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  transition: box-shadow 0.15s ease, transform 0.1s ease, filter 0.15s ease, background 0.15s ease !important;
+}
+
+#fintrack-root .btn-primary {
+  box-shadow: 0 2px 6px rgba(79,142,247,0.35), 0 1px 2px rgba(0,0,0,0.2);
+}
+
+#fintrack-root .btn-primary:hover {
+  box-shadow: 0 4px 12px rgba(79,142,247,0.45), 0 2px 4px rgba(0,0,0,0.24);
+}
+
+#fintrack-root .btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 1px 1px rgba(0,0,0,0.2) !important;
+}
+
+#fintrack-root .btn-ghost {
+  box-shadow: none;
+}
+
+/* Material-style spreading focus ring on inputs/selects */
+#fintrack-root input:not([type=checkbox]):not([type=radio]):focus,
+#fintrack-root select:focus {
+  box-shadow: 0 0 0 3px var(--ft-accentd) !important;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease !important;
+}
+
+/* Nav item ripple-like active/hover state */
+#fintrack-root .ft-nav-item {
+  position: relative;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+#fintrack-root .ft-nav-item.active {
+  box-shadow: inset 3px 0 0 var(--ft-accent);
+}
+
+/* Progress bars get a touch more depth */
+#fintrack-root .progress-bar {
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+}
+
+/* ══════════════════════════════════════════════
+   PRINT — clean report export
+   The "Export Report" button on the Reports page calls window.print();
+   without these rules the browser also prints Nextcloud's top bar, app
+   navigation sidebar, and FinTrack's own nav/page controls. This hides
+   everything except the report's own printable area.
+   ══════════════════════════════════════════════ */
+.ft-print-only-title { display: none; }
+
+@media print {
+  body * { visibility: hidden !important; }
+  #ft-report-print-area, #ft-report-print-area * { visibility: visible !important; }
+  #ft-report-print-area {
+    position: absolute; left: 0; top: 0; width: 100%; margin: 0; padding: 12px;
+    background: #fff !important;
+  }
+  .no-print, #app-navigation, #app-navigation-vue, #header, .app-menu,
+  #ft-modal-overlay, #ft-toast-container, .ft-sidebar, #fintrack-sidebar {
+    display: none !important;
+  }
+  .ft-print-only-title { display: block !important; margin-bottom: 16px; }
+  .ft-print-only-title h1 { font-size: 20px; margin: 0 0 4px; color: #000; }
+  .ft-print-only-title p { font-size: 12px; color: #555; margin: 0; }
+  #ft-report-print-area, #ft-report-print-area .card, #ft-report-print-area .stat-card {
+    color: #000 !important; background: #fff !important; border-color: #ccc !important;
+    box-shadow: none !important;
+  }
+  #ft-report-print-area .card { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px !important; }
+}
+
+/* ══════════════════════════════════════════════
+   SPECIAL-DATE CELEBRATION EFFECT
+   Lightweight decorative overlay for New Year / World Savings Day / World
+   Financial Planning Day popups — a handful of emoji drifting down the
+   screen, auto-removed after a few seconds.
+   ══════════════════════════════════════════════ */
+.ft-celebration-layer {
+  position: fixed; inset: 0; pointer-events: none; z-index: 9999; overflow: hidden;
+}
+.ft-celebration-piece {
+  position: absolute; top: -40px; animation-name: ft-celebration-fall;
+  animation-timing-function: ease-in; animation-fill-mode: forwards; opacity: 0.9;
+}
+@keyframes ft-celebration-fall {
+  0%   { transform: translateY(-40px) rotate(0deg); opacity: 0.9; }
+  100% { transform: translateY(105vh) rotate(360deg); opacity: 0.2; }
+}
+
+/* ══════════════════════════════════════════════
+   APP LOCK OVERLAY — PIN layer on top of Nextcloud's own auth
+   ══════════════════════════════════════════════ */
+#fintrack-root #ft-lock-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--ft-bg, #14161c);
+}
+#fintrack-root #ft-lock-overlay.ft-hidden { display: none; }
+#fintrack-root #ft-lock-box {
+  width: 300px; max-width: 90vw; text-align: center;
+  padding: 32px 28px; border-radius: var(--ft-radius, 14px);
+  background: var(--ft-bg2); border: 1px solid var(--ft-border);
+}
+#fintrack-root .ft-lock-icon { color: var(--ft-accent); margin-bottom: 12px; }
+#fintrack-root .ft-lock-icon svg { width: 40px; height: 40px; fill: currentColor; }
+#fintrack-root #ft-lock-title { font-size: 17px; font-weight: 700; margin-bottom: 4px; color: var(--ft-text); }
+#fintrack-root #ft-lock-sub { font-size: 13px; color: var(--ft-text3); margin-bottom: 18px; }
+#fintrack-root #ft-lock-input {
+  width: 100%; text-align: center; letter-spacing: 4px; font-size: 20px;
+  padding: 10px; margin-bottom: 10px; border-radius: var(--ft-rsm);
+  border: 1px solid var(--ft-border); background: var(--ft-bg3); color: var(--ft-text);
+  box-sizing: border-box;
+}
+#fintrack-root #ft-lock-error { min-height: 18px; font-size: 12.5px; color: var(--ft-red); margin-bottom: 8px; }
+#fintrack-root #ft-lock-box .btn { width: 100%; justify-content: center; }
+#fintrack-root #ft-lock-forgot,
+#fintrack-root #ft-lock-admin-request,
+#fintrack-root #ft-lock-reset-cancel {
+  color: var(--ft-accent); text-decoration: none; text-align: center;
+}
+#fintrack-root #ft-lock-forgot:hover,
+#fintrack-root #ft-lock-admin-request:not(.ft-lock-admin-pending):hover,
+#fintrack-root #ft-lock-reset-cancel:hover { text-decoration: underline; }
+#fintrack-root #ft-lock-admin-request.ft-lock-admin-pending {
+  color: var(--ft-text3); cursor: default; pointer-events: none;
+}
+#fintrack-root #ft-lock-reset-question { color: var(--ft-text2); }
+#fintrack-root #ft-lock-reset-answer-input {
+  width: 100%; padding: 10px; border-radius: var(--ft-rsm);
+  border: 1px solid var(--ft-border); background: var(--ft-bg3); color: var(--ft-text);
+  box-sizing: border-box;
+}
+#fintrack-root #ft-lock-reset-error { min-height: 18px; font-size: 12.5px; color: var(--ft-red); margin-top: 6px; }

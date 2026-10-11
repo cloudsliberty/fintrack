@@ -1,0 +1,14 @@
+{
+	"name": "fintrack/fintrack",
+	"description": "FinTrack personal finance manager for Nextcloud",
+	"type": "nextcloud-app",
+	"license": "AGPL-3.0-or-later",
+	"autoload": {
+		"psr-4": {
+			"OCA\\FinTrack\\": "lib/"
+		}
+	},
+	"require": {
+		"php": ">=8.1"
+	}
+}

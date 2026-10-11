@@ -1,0 +1,348 @@
+:root {
+  --ft-blue: #4f8ef7;
+  --ft-blue-dark: #3a6fd6;
+  --bg: #0f172a;
+  --surface: #1a2540;
+  --surface-2: #22304f;
+  --text: #eef2ff;
+  --muted: #93a2c4;
+  --green: #2e7d32;
+  --red: #d32f2f;
+  --orange: #f59e0b;
+  --border: #2c3a5c;
+  --ft-color-scheme: dark;
+}
+
+/* Light theme — selected from PWA Settings → Appearance (Light, or Automatic
+   during the day). js/pwa-app.js sets data-theme on <html>; no attribute
+   means the default dark palette above. */
+html[data-theme="light"] {
+  --bg: #f3f5fa;
+  --surface: #ffffff;
+  --surface-2: #eaeef7;
+  --text: #0f172a;
+  --muted: #5a6788;
+  --border: #d3d9e8;
+  --orange: #b45309;
+  --ft-color-scheme: light;
+}
+html[data-theme="light"] .ft-modal,
+html[data-theme="light"] .card { box-shadow: 0 1px 6px rgba(15, 23, 42, 0.08); }
+
+* { box-sizing: border-box; }
+
+/* Give up trying to make the *document* (html/body) scroll natively.
+   Nextcloud's own core CSS for the 'base'/public layout (#content.app-public,
+   body#body-public.layout-base) has, across many rounds of !important
+   overrides here, continued to win the cascade in ways that couldn't be
+   pinned down further without a live instance to inspect — possibly a
+   deliberate "single fixed-viewport page" design on core's part for public
+   pages (file previews etc.), possibly load-order, doesn't matter which.
+   Instead: make #app-root its own fixed-height, self-scrolling box,
+   completely independent of whatever html/body/#content do above it. This
+   sidesteps the fight entirely rather than continuing to guess at it. */
+html, body, #content, #content-vue,
+body#body-public.layout-base, #content.app-public {
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  height: 100% !important;
+}
+html, body { height: 100%; }
+
+#app-root {
+  display: block;
+  height: 100vh;   /* fallback for browsers without dvh */
+  height: 100dvh;  /* accounts for mobile browser chrome/address bar */
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain; /* stop pull-to-refresh/rubber-banding from reaching the page behind it */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  /* Scrolling now happens inside #app-root (see above), not on body itself
+     — body stays fixed at 100% height with overflow hidden so there's
+     never a second, competing scroll container. */
+}
+
+button { font-family: inherit; cursor: pointer; }
+a { color: var(--ft-blue); }
+
+/* ── Auth screens (login / PIN setup / PIN unlock) ── */
+.auth-screen {
+  max-width: 380px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.auth-logo { width: 72px; height: 72px; border-radius: 16px; margin-bottom: 12px; }
+.auth-screen h1 { margin: 0; font-size: 22px; }
+.auth-screen h2 { font-size: 18px; }
+.muted { color: var(--muted); }
+.muted.small, .small { font-size: 12px; }
+
+.ft-input {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 15px;
+}
+.ft-field-label { display: block; margin-top: 14px; font-size: 13px; color: var(--muted); text-align: left; }
+
+.ft-btn {
+  padding: 12px 18px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 12px;
+  width: 100%;
+}
+.ft-btn-primary { background: var(--ft-blue); color: white; }
+.ft-btn-primary:hover { background: var(--ft-blue-dark); }
+.ft-btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); width: auto; }
+.ft-btn-text { background: transparent; color: var(--ft-blue); width: auto; }
+.ft-btn-danger { background: var(--red); color: white; width: auto; }
+.ft-error { color: var(--red); font-size: 13px; min-height: 18px; margin-top: 6px; }
+
+/* ── App shell ── */
+.app-shell { display: grid; grid-template-columns: 220px 1fr; grid-template-rows: 56px 1fr; min-height: 100vh; width: 100%; }
+.app-topbar {
+  grid-column: 1 / -1; position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--surface);
+}
+.app-title { font-weight: 700; font-size: 18px; }
+.app-sidebar { background: var(--surface); border-right: 1px solid var(--border); padding: 8px; position: sticky; top: 56px; height: calc(100vh - 56px); overflow-y: auto; }
+.app-content { padding: 24px 32px; width: 100%; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 10px 12px; border: none; background: transparent; color: var(--text);
+  border-radius: 8px; text-align: left; font-size: 14px; margin-bottom: 2px;
+}
+.nav-item:hover { background: var(--surface-2); }
+.nav-item.active { background: var(--ft-blue); color: white; }
+.nav-icon { width: 20px; text-align: center; }
+.nav-logout { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 14px; }
+
+.sync-icon { font-size: 16px; width: 24px; text-align: center; }
+.sync-icon.sync-ok { color: var(--green); }
+.sync-icon.sync-offline { color: var(--red); }
+.sync-icon.spin { display: inline-block; animation: spin 1s linear infinite; color: var(--muted); }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* ── Sections / lists ── */
+.section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+.section-header h2 { margin: 0; }
+.section-header .ft-btn { width: auto; margin-top: 0; margin-left: 8px; }
+
+.group-header { color: var(--muted); margin: 18px 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+
+.list-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 14px; background: var(--surface); border-radius: 10px; margin-bottom: 8px;
+  gap: 12px;
+}
+.list-row.clickable { cursor: pointer; }
+.clickable { cursor: pointer; }
+.list-row > div:first-child { flex: 1; min-width: 0; }
+
+.icon-btn { background: transparent; border: none; font-size: 16px; padding: 6px; margin-top: 0; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 20px; }
+
+/* Used on Accounts/Budgets/Transfers/Categories: a single stacked column
+   wastes most of a wide desktop viewport, so lay list-rows out in as many
+   columns as fit (still collapses to one column on mobile via minmax). */
+.list-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 10px; }
+.list-grid .list-row { margin-bottom: 0; }
+
+/* Uniform sizing for the row of action/donate links in Settings → About App —
+   previously GitHub used .ft-btn-outline's padding while PayPal/Ko-fi had
+   their own smaller inline padding, so the row looked mismatched. */
+.ft-btn-link {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 10px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 700;
+  text-decoration: none; line-height: 1.2; min-width: 150px; box-sizing: border-box;
+}
+.stat-card { background: var(--surface); border-radius: 10px; padding: 14px; }
+.stat-label { color: var(--muted); font-size: 12px; }
+.stat-value { font-size: 20px; font-weight: 700; margin-top: 4px; }
+.c-green { color: var(--green) !important; }
+.c-red { color: var(--red) !important; }
+.c-orange { color: var(--orange) !important; }
+
+.progress-track { height: 6px; background: var(--surface-2); border-radius: 4px; overflow: hidden; margin-top: 6px; }
+.progress-fill { height: 100%; background: var(--ft-blue); }
+.progress-fill.over { background: var(--red); }
+.budget-row { background: var(--surface); border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; }
+
+.filter-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.filter-bar .ft-input { margin-top: 0; width: auto; flex: 1; min-width: 140px; }
+.filter-bar .ft-combo { flex: 1; min-width: 140px; }
+
+.card { background: var(--surface); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+.card h4 { margin: 0 0 8px; }
+.card .ft-btn { width: auto; margin-right: 8px; }
+
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.chip { background: var(--surface-2); border-radius: 20px; padding: 6px 10px; font-size: 13px; display: flex; align-items: center; gap: 6px; }
+.chip-remove { background: none; border: none; color: var(--muted); font-size: 15px; padding: 0; margin: 0; }
+
+/* Fuzzy-search combo dropdown (fuzzyCombo() / tagComboInput() in pwa-app.js) */
+.ft-combo { position: relative; }
+.ft-combo .ft-input {
+  margin-top: 0; padding-right: 34px; width: 100%;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+}
+.ft-combo-clear {
+  /* Vertically centred on the input itself (top:50% + translateY) rather
+     than relying on top/bottom:0 + margin:auto, which broke whenever the
+     wrapper ended up taller than the input (e.g. in .ft-field, where the
+     wrapper sits below a label). The min-/height resets stop Nextcloud
+     core's global button rules (44px touch targets, rounded backgrounds)
+     from inflating the button and pushing the '×' off-centre. */
+  position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; min-width: 0 !important; min-height: 0 !important;
+  margin: 0 !important; padding: 0 !important; border-radius: 50%;
+  background: none !important; border: none !important; box-shadow: none !important;
+  color: var(--muted); font-size: 18px; line-height: 1; cursor: pointer;
+}
+.ft-combo-clear:hover { color: var(--text); background: var(--surface-2) !important; }
+.ft-combo-list {
+  position: absolute; left: 0; right: 0; top: calc(100% + 2px); z-index: 40;
+  max-height: 220px; overflow-y: auto; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+}
+.ft-combo-option {
+  padding: 10px 14px; font-size: 14px; cursor: pointer;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+}
+.ft-combo-option:hover, .ft-combo-option:active { background: var(--surface-2); }
+
+/* Selects (Type, Currency, Frequency, Period …): Nextcloud core forces a
+   fixed height/line-height on <select>, which clipped the selected text
+   about halfway. Let the height follow the content instead, with a
+   comfortable minimum, real line-height, and room for the native arrow.
+   Same 15px size as every other .ft-input so nothing needs shrinking. */
+select.ft-input {
+  height: auto !important; min-height: 46px; line-height: 1.4 !important;
+  padding: 10px 34px 10px 14px; font-size: 15px;
+  text-overflow: ellipsis; overflow: hidden; white-space: nowrap;
+  appearance: auto; -webkit-appearance: menulist; color-scheme: var(--ft-color-scheme);
+}
+select.ft-input option { background: var(--surface); color: var(--text); font-size: 15px; }
+
+/* Nextcloud core's own heading colours (dark text) win over inherited body
+   colour on headings rendered inside our app/modals, making titles such as
+   "New Transaction" / "New Account" / "New Transfer" near-invisible on the
+   dark background. Set them explicitly. */
+#app-root h1, #app-root h2, #app-root h3, #app-root h4, #app-root h5,
+.ft-modal h1, .ft-modal h2, .ft-modal h3, .ft-modal h4, .ft-modal h5,
+.auth-screen h1, .auth-screen h2 {
+  color: var(--text) !important;
+}
+.ft-modal, .ft-modal p, .ft-modal label { color: var(--text); }
+.ft-modal label, .ft-field label { color: var(--muted); }
+.ft-modal .muted { color: var(--muted); }
+/* Keep the native date picker icon and form controls legible on dark surfaces. */
+.ft-input { color-scheme: var(--ft-color-scheme); }
+
+.token-box { display: block; background: var(--surface-2); padding: 10px; border-radius: 8px; word-break: break-all; margin: 8px 0; font-size: 13px; }
+
+.error-box { background: var(--surface); border-radius: 10px; padding: 20px; text-align: center; }
+.loading-placeholder { color: var(--muted); padding: 40px; text-align: center; }
+
+/* ── Modal ── */
+.ft-modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.55);
+  display: flex; align-items: center; justify-content: center; padding: 16px; z-index: 100;
+}
+.ft-modal {
+  background: var(--surface); border-radius: 14px; padding: 22px;
+  max-width: 420px; width: 100%; max-height: 88vh; overflow-y: auto;
+}
+.ft-modal h3 { margin-top: 0; }
+.ft-modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+.ft-modal-actions .ft-btn { width: auto; margin-top: 0; }
+.ft-field { margin-top: 12px; }
+.ft-field label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+.ft-form textarea.ft-input { min-height: 70px; resize: vertical; }
+
+/* ── Toast ── */
+.ft-toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+  background: var(--surface-2); color: var(--text); padding: 12px 18px; border-radius: 10px;
+  opacity: 0; transition: opacity .25s, transform .25s; z-index: 200; font-size: 14px;
+}
+.ft-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.ft-toast-error { background: var(--red); }
+
+/* ── Responsive ── */
+/* Desktop-only sidebar; hidden below 720px in favor of .bottom-nav. */
+.bottom-nav { display: none; }
+
+@media (max-width: 720px) {
+  .app-shell { display: block; min-height: 100vh; width: 100%; }
+  .app-topbar { position: sticky; top: 0; z-index: 30; height: 52px; }
+  .app-content {
+    padding: 14px 14px calc(76px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .app-sidebar { display: none; }
+
+  /* Fixed bottom nav bar: exactly 5 buttons (4 primary + More), evenly
+     spaced to fill the width, safe-area aware. */
+  .bottom-nav {
+    display: flex; position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+    flex-direction: row; justify-content: space-between; align-items: stretch;
+    border-top: 1px solid var(--border); background: var(--surface);
+    padding: 4px 4px calc(4px + env(safe-area-inset-bottom, 0px));
+    gap: 2px;
+  }
+  .bottom-nav > .nav-item:last-child { position: relative; } /* the More button anchors its own popup */  .bottom-nav .nav-item {
+    flex: 1 1 0; min-width: 0;
+    flex-direction: column; justify-content: center;
+    padding: 6px 2px; font-size: 10.5px; gap: 3px; margin-bottom: 0;
+    border-radius: 10px; background: none; border: none; color: var(--text);
+  }
+  .bottom-nav .nav-item.active { background: var(--ft-blue); color: white; }
+  .nav-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+
+  /* "More" popup: a vertically-stacked menu directly above the More button. */
+  .more-nav-menu {
+    position: absolute; right: 4px; bottom: calc(100% + 6px);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.25); overflow: hidden; min-width: 180px;
+  }
+  .more-nav-item {
+    display: flex; align-items: center; gap: 10px; width: 100%;
+    padding: 12px 16px; font-size: 14px; background: none; border: none; color: var(--text);
+    text-align: left; border-bottom: 1px solid var(--border);
+  }
+  .more-nav-item:last-child { border-bottom: none; }
+  .more-nav-item.active { color: var(--ft-blue); font-weight: 600; }
+}
+
+/* Very small phones: drop text labels in the bottom nav, icons only,
+   so nothing gets clipped or squeezed unreadably. */
+@media (max-width: 420px) {
+  .bottom-nav .nav-label { display: none; }
+  .bottom-nav .nav-item { font-size: 0; }
+}
+

@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>fintrack</id>
+    <name>FinTrack</name>
+    <summary>Personal Finance Manager</summary>
+    <description><![CDATA[
+FinTrack is a full-featured personal finance tracking application integrated into Nextcloud.
+**Features:**
+- Asset, Expense, Revenue and Liability accounts
+- Multi-currency support with online live conversion rates
+- Income and expense transaction tracking
+- Inter-account transfers with automatic currency conversion
+- Recurring transactions posted automatically in the background
+- Budget management with progress tracking
+- Categories and tags for transactions
+- Financial reports and analytics
+- External URL for remote transaction entry
+- CSV/JSON import and export, with automatic duplicate detection and rule-based auto-categorization on CSV import
+- Dashboard preview of upcoming recurring transactions due
+- Full backup & restore options
+- An optional PIN lock with session timeout and lockout, layered on top of your Nextcloud login
+- All data stored securely in your Nextcloud database
+- Clients:
+  - Installable Progressive Web App (PWA) for desktop and mobile devices
+  - Android app currently available in beta testing
+  - Responsive web interface optimized for all screen sizes
+- Support development via PayPal or Ko-fi (see Settings → About FinTrack)
+
+**What's new:**
+- Nextcloud alerts for recurring transactions (per-rule on/off) and custom transaction reminders
+- PWA fixes: account pre-fill, dark-mode headers, clear-button and dropdown alignment
+- "Report an issue" link; log files now start with your instance UUID and app version
+- Full Progressive Web App with offline transaction entry & auto-sync
+- Biometric unlock (Face/Touch ID) for the PWA
+- Remote PWA session management — view & revoke devices, auto-wipe on inactivity
+- Mandatory PIN Lock policy for PWA access
+- Per-currency exchange-rate provider selection (auto/Frankfurter/exchangerate.host)
+- Cached "last updated" exchange rates, auto-filled on new entries
+- Safer deletes: accounts/categories/tags/currencies in use are protected, not silently orphaned
+- Modernized PWA UI: fuzzy search pickers, responsive layout, mobile bottom nav
+    ]]></description>
+    <version>1.22.1</version>
+    <licence>agpl</licence>
+    <author mail="clouds.liberty@gmail.com" homepage="https://github.com/cloudsliberty/fintrack">Abdul Jaleel Adenpulan</author>
+    <namespace>FinTrack</namespace>
+    <documentation>
+        <user>https://github.com/cloudsliberty/fintrack/blob/main/README.md</user>
+        <admin>https://github.com/cloudsliberty/fintrack/blob/main/docs/MANUAL.md</admin>
+    </documentation>
+    <website>https://github.com/cloudsliberty/fintrack</website>
+    <repository>https://github.com/cloudsliberty/fintrack</repository>
+    <category>tools</category>
+    <category>organization</category>
+    <category>office</category>
+    <bugs>https://github.com/cloudsliberty/fintrack/issues</bugs>
+    <screenshot small-thumbnail="https://raw.githubusercontent.com/cloudsliberty/fintrack/refs/heads/main/screenshots/fintrack_thumbnail.jpg">https://raw.githubusercontent.com/cloudsliberty/fintrack/refs/heads/main/screenshots/dashboard.png</screenshot>
+    <donation title="Donate to support FinTrack" type="paypal">https://www.paypal.me/jaleel1618</donation>
+    <donation title="Support FinTrack on Ko-fi" type="other">https://ko-fi.com/jaleel1618</donation>
+    <dependencies>
+        <nextcloud min-version="32" max-version="32"/>
+    </dependencies>
+    <background-jobs>
+        <job>OCA\FinTrack\BackgroundJob\PostDueRecurringJob</job>
+    </background-jobs>
+    <navigations>
+        <navigation>
+            <name>FinTrack</name>
+            <route>fintrack.page.index</route>
+            <icon>app.svg</icon>
+            <order>50</order>
+        </navigation>
+    </navigations>
+    <settings>
+        <admin>OCA\FinTrack\Settings\AdminSettings</admin>
+        <admin-section>OCA\FinTrack\Settings\AdminSection</admin-section>
+    </settings>
+</info>
