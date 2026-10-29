@@ -8,7 +8,7 @@
 <p align="center">
   <a href="https://github.com/cloudsliberty/fintrack/blob/main/LICENSE"><img alt="License: AGPL-3.0" src="https://img.shields.io/badge/license-AGPL--3.0-blue"></a>
   <img alt="Nextcloud" src="https://img.shields.io/badge/Nextcloud-32%2B-00679E">
-  <img alt="Version" src="https://img.shields.io/badge/version-1.24.0-informational">
+  <img alt="Version" src="https://img.shields.io/badge/version-1.24.1-informational">
 </p>
 
 Track accounts, income and expenses, transfers, budgets, and recurring
